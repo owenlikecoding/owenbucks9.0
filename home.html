@@ -147,7 +147,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-        import { getDatabase, get, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+        import { getDatabase, get, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
 
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
@@ -195,12 +195,15 @@
             get(ref(db, "users/" + window.localStorage.getItem("username"))).then((snapshot) => {
                 var amount = snapshot.val().balance;
                 if (balance < amount) {
-                    var user = prompt("Who do you want to transfer money to?");
+                    var user = prompt("Whom dus thou want to transfer money to?");
                     get(ref(db, "users/" + user)).then((snapshot) => {
                         if (snapshot.exists()) {
                             var amount = snapshot.val().balance;
-                            set(ref(db, "users/" + user + "/balance"), amount + balance);
-                            set(ref(db, "users/" + window.localStorage.getItem("username") + "/balance"), amount - balance);
+                            set(ref(db, "users/" + user + "/balance"), amount/1 + balance);
+                            set(ref(db, "users/" + window.localStorage.getItem("username") + "/balance"), amount/1 - balance);
+                        }
+                        else if (balance > 0) {
+                            alert("NOOOOOOOOOOOOOOOOOOO");
                         }
                         else {
                             alert("User does not exist");
