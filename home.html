@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owen Bucks 9.0 | Home</title>
+</head>
+
+<body>
+    <div id="top">
+        <h1>Owen Bucks 9.0</h1>
+        <p id="balance"></p>
+    </div>
+    <div id="main">
+        <h2>Buttons</h2>
+        <div id="buttons">
+            <button id="snake">Snake Game 👎🏻</button>
+            <button id="math">Math Game 👍🏻</button>
+            <button id="transaction">Make a Transaction</button>
+        </div>
+        <h2>Custimization</h2>
+        <p>Background Color</p>
+        <input type="color" value="#3e0dc4" id="color">
+        <p>Text Color</p>
+        <input type="color" id="text" value="#ffffff"><br><br>
+        <button id="Submit">Submit</button>
+        <button id="reset">Reset to default</button>
+        <button id="animation">No background animation</button>
+
+
+    </div>
+
+    <style>
+        * {
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        body {
+            background-image: linear-gradient(to right, #000000, purple, #381597);
+            background-size: 400% 400%;
+            animation: backgroundShift 10s ease infinite;
+
+        }
+
+        #sign_up {
+            width: 50%;
+            margin-left: 25%;
+            height: auto;
+            border: 3px solid white;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            /*blur the background*/
+        }
+        @keyframes backgroundShift {
+           0% {
+            background-position: 0% 50%;
+            }
+            50% {
+            background-position: 100% 50%;
+            }
+            100% {
+            background-position: 0% 50%;
+            }
+
+           
+        }
+
+
+
+        input[type=text],
+        select,
+        textarea {
+            width: 80%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #main {
+            width: 50%;
+            height: auto;
+            margin-left: 25%;
+            background-color: #3e0dc4;
+            border: 3px solid white;
+            padding: 10vh;
+            margin-top: 10vh;
+        }
+
+        #top {
+            width: 100%;
+            height: auto;
+            text-align: center;
+            border-bottom: #000000 4px solid;
+            /*blur the background*/
+        }
+
+
+
+        /* CSS */
+        button {
+            background-color: #FFFFFF;
+            border: 0;
+            border-radius: .5rem;
+            box-sizing: border-box;
+            color: #111827;
+            font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-size: .875rem;
+            font-weight: 600;
+            line-height: 1.25rem;
+            padding: .75rem 1rem;
+            text-align: center;
+            text-decoration: none #D1D5DB solid;
+            text-decoration-thickness: auto;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        button {
+            background-color: rgb(249, 250, 251);
+        }
+
+        button {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+        }
+
+        button {
+            box-shadow: none;
+        }
+
+        a {
+            color: white;
+        }
+    </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
+        import { getDatabase, get, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCvuKvpDjhsFRqzw1PdUarezN12DftJ-W8",
+            authDomain: "owenbucks-5e9d1.firebaseapp.com",
+            projectId: "owenbucks-5e9d1",
+            storageBucket: "owenbucks-5e9d1.appspot.com",
+            messagingSenderId: "766451002291",
+            appId: "1:766451002291:web:90b716291c140d798bb9c6"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dbRef = ref(db);
+        // dom vars
+        onValue(ref(db, "users/" + window.localStorage.getItem("username") + "/balance"),  (snapshot) => {
+            if (snapshot.exists()) {
+                document.getElementById("balance").innerHTML = "Balance: " + snapshot.val();
+            } else {
+                console.log("No data available");
+            }
+        })
+        //  dom vars
+        var username = window.localStorage.getItem("username");
+        var balance = document.getElementById("balance");
+        var snake = document.getElementById("snake");
+        var math = document.getElementById("math");
+        var transaction = document.getElementById("transaction");
+        var submit = document.getElementById("Submit");
+        var color = document.getElementById("color");
+        var text = document.getElementById("text");
+        var submit = document.getElementById("Submit");
+        snake.onclick = function () {
+            window.location.href = "./snake.html";
+        }
+        math.onclick = function () {
+            window.location.href = "./math.html";
+        }
+        transaction.onclick = function () {
+            var balance = prompt("How much money do you want to transfer?");
+            get(ref(db, "users/" + window.localStorage.getItem("username"))).then((snapshot) => {
+                var amount = snapshot.val().balance;
+                if (balance < amount) {
+                    var user = prompt("Who do you want to transfer money to?");
+                    get(ref(db, "users/" + user)).then((snapshot) => {
+                        if (snapshot.exists()) {
+                            var amount = snapshot.val().balance;
+                            set(ref(db, "users/" + user + "/balance"), amount + balance);
+                            set(ref(db, "users/" + window.localStorage.getItem("username") + "/balance"), amount - balance);
+                        }
+                        else {
+                            alert("User does not exist");
+                        }
+                    });
+
+                }
+                else {
+                    alert("You do not have enough money");
+                }
+            });
+
+        }
+        // custimization
+        submit.onclick = function () {
+            document.body.style.backgroundColor = color.value;
+            document.body.style.backgroundImage = "none";
+            document.body.style.color = text.value;
+            window.localStorage.setItem("color", color.value);
+            window.localStorage.setItem("text", text.value);
+
+        }
+        setTimeout(function () {
+            // custimization
+            if (window.localStorage.getItem("color") != null) {
+                document.body.style.backgroundColor = window.localStorage.getItem("color");
+                document.body.style.backgroundImage = "none";
+
+            }
+            if (window.localStorage.getItem("text") == null) {
+                window.localStorage.setItem("text", "white");
+            }
+            else {
+                document.body.style.color = window.localStorage.getItem("text");
+            }
+        }, 1000);
+        var reset = document.getElementById("reset");
+        reset.onclick = function () {
+            window.localStorage.removeItem("color");
+            window.localStorage.setItem("text", "white");
+            window.location.reload();
+        }
+        // no background animation
+        var animation = document.getElementById("animation");
+        animation.onclick = function () {
+            document.body.style.animation = "none";
+        }
+        var math = document.getElementById("math");
+        math.onclick = function () {
+            var x = Math.floor(Math.random() * 10);
+            var y = Math.floor(Math.random() * 10);
+            var answer = prompt("What is " + x + " x " + y + "?");
+            if (answer == x * y) {
+                alert("You got it right! You get one owen buck");
+                get(ref(db, "users/" + window.localStorage.getItem("username"))).then((snapshot) => {
+                    var amount = snapshot.val().balance;
+                    set(ref(db, "users/" + window.localStorage.getItem("username") + "/balance"), amount/1 + 1);
+                });
+            }
+            else {
+                alert("How?");
+            }
+        }
+
+
+
+
+
+
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Inconsolata:wght@300&family=JetBrains+Mono:wght@200;300;400&family=Merriweather:wght@300&family=Montserrat:wght@800&family=Nabla&family=Noto+Sans+JP:wght@100&family=Open+Sans:wght@500;800&family=Orbitron&family=Raleway:ital,wght@0,200;1,400&family=Seymour+One&family=Sigmar+One&family=Source+Code+Pro&family=Unbounded&display=swap');
+    </style>
+</body>
+
+</html>
